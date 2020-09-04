@@ -29,6 +29,23 @@ close(con) ## It's important to close the connection when you are done. See the 
 ####11 Tokenization - identifying appropriate tokens such as words, punctuation, and numbers.
 ####    Writing a function that takes a file as input and returns a tokenized version of it.
 
+library(quanteda)
+myCorpus <- corpus(data_char_ukimmig2010)
+summary(myCorpus)
+
+# extract 1-grams from first document
+ngram1 <- tokens(myCorpus[1],n=1)
+ngramTable <- as.data.frame(table(ngram1))
+# count the number of distinct 1-grams, matching Types for BNP text
+nrow(ngramTable)
+# count total number of 1-grams (i.e. sum the frequencies), matching Tokens
+sum(ngramTable$Freq)
+# print most frequent 1-grams
+tail(ngramTable[order(ngramTable$Freq),])
+# count the sentences
+sentences <- tokens(myCorpus[1],what = "sentence")
+length(sentences[[1]])
+
 ####12  Profanity filtering - removing profanity and other words you do not want to predict.
 
 ## Search for a word in a text (like fuck)
