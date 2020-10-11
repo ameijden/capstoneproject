@@ -1,0 +1,97 @@
+---
+title: "Report week 2 Data Science Capstone"
+author: "Arnout van der Meijden"
+date: "10/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Summary
+This report is written to show the results of the exploratory data analysis involved and will explain the next planned stepps to create an algorith and Shiny app. 
+
+## Exploratory analysis
+The following explains the exploratory data analysis performed on the News, Twitter and Blog text provided. 
+First look at the basics of these three files.
+
+|characters|words|lines|name of file|
+|-------:|-------:|-------:|-------:|
+|1.010.242|34.365.905|205.243.643|en_US.news.txt|
+|899.288|37.333.958|208.623.085|en_US.blogs.txt|
+|2.360.148|30.357.171|166.843.164|en_US.twitter.txt|
+
+So they seem to contain about the same amount of words and lines. 
+Only the amount of characters is a lot more in the twitter file.
+
+I was expecting to see the following: 
+
+Twitter -> mostly short words, bold language, abbreviations, hashtags, lots of mistakes in spelling
+blog -> better written English, more 'difficult' words, less mistakes in spelling
+news -> better written English, more 'difficult' words, almost no mistakes in spelling, headlines can be misleading (double meaning).
+
+First step: How much profanity is there in the texts and remove them so the prediction algorithm would not predict any profanity.
+
+|profanity occurrences|unique profanity words|file|
+|-------:|-------:|-------:|
+|21|15|en_US.news.txt|
+|7.436|388|en_US.blogs.txt|
+|51.306|1.565|en_US.twitter.txt|
+
+To see which words I have classified as profanity, check the code part. 
+It is clear that the twitter contains a lot of profanity. The news almost none and the blogs text some. 
+Unique words
+Misspelled words? common mistakes? 
+
+Next I check how often some commonly misspelled words are used in these texts.
+
+|misspelled occurrences|unique misspelled words|file|
+|-------:|-------:|-------:|
+|5|4|en_US.news.txt|
+|806|63|en_US.blogs.txt|
+|2.374|102|en_US.twitter.txt|
+
+
+Second step: Show relevant summaries
+  Word counts?
+  Number of unique words (also mistyped and misspelled words)
+  Number of words in a sentence
+  Line counts? (Available)
+  Data tables
+  Length of words? Relevant?
+  Misspelled words? No idea how to check this? Take some examples of a word and see all the words with about the same spelling 
+  
+  
+Third step: Some basic plots
+  To illustrate features of the data ()
+  Most used words?
+  Number of unique words
+  Foreign words? No idea
+  Number of times of most used 2-ngrams and 3 n-grams? Are there any words that most likely followed by another word and how often does this happen in the texts? 
+  
+  
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+
+Fourth step: summarize your plans for creating the predicting algorithm and Shiny app that would be understandable to a non-data scientist manager.
+
+## Creating a prediction algorithm and Shiny app
+
+First step in building the algorithm is making sure the input is correct. I will remove profanity (based on .. ). Then then next step is to evaluate if the three texts are the right input. I am expecting that the twitter feed will not very usable (lot of profanity, misspelled words, etc.) so will probably not use this datasource as input for the algorithm. I will perform some other checks and based on these results will remove more data. 
+When the data is of high enough quality I will start creating the algorith. 
+
+To build the algorithm I want to use the 2-grams and 3-grams tokens. So based on the texts these are the most used combination of words. So if someone enters the first word, the algorithm will look for the word(s) which are used the most to give these options. I will combine this approach with other predicting techniques to get the best results. 
+
+At this moment I have some ideas how to cope with 'unkown' words but not yet a definite plan how to cope with these words. I will encounter some unforeseen problems. 
+
+For the webapplication my plan is to generate three suggestions for the next word after the fourth letter that is typed, provided I can make the algorithm fast enough. I will also have a button for words shorter than 4 letters or give the user an option to let the app know the user is finished typing and waiting for suggestions. The user gets three suggestions and can choose one by clicking on it. This will add the word to the text the user is typing. The user will get three suggestions for the next word.  
+
+
+## The code used for the exploratory analysis
+```{r, eval=FALSE}
+
+
+```
