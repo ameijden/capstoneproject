@@ -6,6 +6,22 @@
 ### 1010242 lines in this file
 ### 34365905 words in this file
 
+### The only decent work I could review: https://rstudio-pubs-static.s3.amazonaws.com/297058_7f72243dddd741eea84d5e405c46f5d0.html
+### Second check, this is an old one made in 2017
+## Nice analysis 
+## https://robianson.github.io/cs-ds-capstone/Week-2-Milestone/  
+
+## Input from Francesco
+## https://rpubs.com/frncscm/585288
+
+## INput from Axel Perruchoud
+##  https://rpubs.com/moya/206223
+
+## Input from Greg
+## https://github.com/lgreski/datasciencectacontent/blob/master/markdown/capstone-ngramComputerCapacity.md
+
+
+
 #### To do this for all files (m=characters, w=words, l=lines)
 
 ## wc -mlw en_US.news.txt en_US.blogs.txt en_US.twitter.txt
@@ -106,6 +122,90 @@ newstokenized3 %>%
   xlab(NULL) +
   coord_flip()
 
+## Or a treemap with the most used words
+Mostusedwordsinnews <- newstokenized3 %>%
+  count(newstokenized2, sort = TRUE) %>%
+  filter(n < 50000) %>%
+  filter(n > 10000)
+
+Mostusedwordsinnews2 <- newstokenized3 %>%
+  count(newstokenized2, sort = TRUE) %>%
+  filter(n > 50000)
+
+blogstokenized3 %>%
+  count(blogstokenized2, sort = TRUE) %>%
+  filter(n < 850000) %>%  ## to filter out space, is, the, it, not, you, etc. 
+  filter(n > 200000) %>%
+  ggplot(aes(blogstokenized2, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
+
+
+Mostusedwordsinblogs <- blogstokenized3 %>%
+  count(blogstokenized2, sort = TRUE) %>%
+  filter(n < 850000) %>%
+  filter(n > 200000)
+
+
+Mostusedwordsinblogs2 <- blogstokenized3 %>%
+  count(blogstokenized2, sort = TRUE) %>%
+  filter(n > 300000)
+
+
+Mostusedwordsintwitter2 <- twittertokenized3 %>%
+  count(twittertokenized2, sort = TRUE) %>%
+  filter(n > 450000)
+
+Mostusedwordsintwitter <- twittertokenized3 %>%
+  count(twittertokenized2, sort = TRUE) %>%
+  filter(n < 450000) %>%
+  filter(n > 200000)
+
+twittertokenized3 %>%
+  count(twittertokenized2, sort = TRUE) %>%
+  filter(n < 450000) %>%  
+  filter(n > 200000) %>%
+  ggplot(aes(twittertokenized2, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
+
+
+
+
+ggplot(aes(Mostusedwordsinnews, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
+
+
+library(treemap)
+treemap(Mostusedwordsinnews,
+        index=c("newstokenized2"),
+        vSize = "n",
+        type = "index",
+        palette = "Reds",
+        title="Most used words in news",
+        fontsize.title = 14)
+
+
+
+library(treemap)
+treemap(Mostusedwordsinblogs,
+        index=c("blogstokenized2"),
+        vSize = "n",
+        type = "index",
+        palette = "Blues",
+        title="Most used words in blogs",
+        fontsize.title = 14)
+
+
+
+
+
+
+
 
 newstogetngram <- as_tibble(newstokenized3)
 str(test10tokenizedquan4)
@@ -124,14 +224,38 @@ newsngram1  <- unnest_ngrams(newstogetngram, words, word, n=1) ## Seems to work 
 
 newsngram3 %>%
   count(words, sort = TRUE) %>%
-  filter(n > 50) %>%
+  filter(n > 250) %>%
   ggplot(aes(words, n)) +
   geom_col() +
   xlab(NULL) +
   coord_flip()
 
-head(newsngram3)
-
-newsngram3 %>%
+newsngram2 %>%
   count(words, sort = TRUE) %>%
-  filter(n > 150) 
+  filter(n > 2500) %>%
+  ggplot(aes(words, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
+
+
+blogstogetngram <- as_tibble(blogstokenized3)
+colnames(blogstogetngram) <- c("word")
+blogsngram3 <- unnest_ngrams(blogstogetngram, words, word) ## Seems to work (3 grams)
+blogsngram2 <- unnest_ngrams(blogstogetngram, words, word, n=2) ## Seems to work (2 grams)
+
+blogsngram3 %>%
+  count(words, sort = TRUE) %>%
+  filter(n > 750) %>%
+  ggplot(aes(words, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
+
+blogsngram2 %>%
+  count(words, sort = TRUE) %>%
+  filter(n > 2500) %>%
+  ggplot(aes(words, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
