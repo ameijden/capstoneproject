@@ -221,6 +221,10 @@ library(dplyr)
 newsngram3 <- unnest_ngrams(newstogetngram, words, word) ## Seems to work (3 grams)
 newsngram2 <- unnest_ngrams(newstogetngram, words, word, n=2) ## Seems to work (2 grams)
 newsngram1  <- unnest_ngrams(newstogetngram, words, word, n=1) ## Seems to work (1 grams)
+newsngram4 <- unnest_ngrams(newstogetngram, words, word, n=4)
+newsngram5 <- unnest_ngrams(newstogetngram, words, word, n=5)
+newsngram6 <- unnest_ngrams(newstogetngram, words, word, n=6)
+
 
 newsngram3 %>%
   count(words, sort = TRUE) %>%
