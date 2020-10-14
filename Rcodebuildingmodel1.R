@@ -22,14 +22,17 @@ patternprofandsigns <- "[^0-9A-Za-z\' ]|ahole|arsehole|asshole|bimbo|bitch|blowj
 newsclean <- gsub('[^0-9A-Za-z\' ]','',newstokenized3$word) ## Remove all profanity and everything not being a letter, number, space or '
 
 
-rm(news) ## We don't use these variable anymore
-rm(newstokenized) ## We don't use these variable anymore (is about 200 Mb)
+rm(news) ## We don't use these variable anymore (about 270 mb)
+rm(newstokenized) ## We don't use these variable anymore (is about 2,6 Gb)
 rm(newstokenized2) ## (615 Mb)
 rm(newstokenized3) ## (74316338 obs. of 1 variable)
 
+library(dplyr)
 newstogetngram <- as_tibble(newsclean)
 
 colnames(newstogetngram) <- c("word")
+
+rm(newsclean)
 
 ## Create a lot of n-grams 
 library(tidytext)
@@ -47,8 +50,51 @@ newsngram7 <- unnest_ngrams(newstogetngram, words, word, n=7)
 ## a model can store more context with a well-understood space–time tradeoff, enabling small experiments 
 ## to scale up efficiently. https://en.wikipedia.org/wiki/N-gram
 
+### Task 3 - Modelling
+## Task 1: build a basic n-gram model for predicting the next word based on the previous 1, 2, or 3 words.
+## Task 2: Build a model to handle unseen n-grams 
+
+## Next step, count the number of occurrences
+newsngram1count2 <- as.data.frame(table(newsngram1)) 
+## newsngram1count3 <- as_tibble(newsngram1count2)
 
 
+newsngram2count <- as.data.frame(table(newsngram2)) 
+head(newsngram2count)
+
+newsngram2countorded <- newsngram2count[order(newsngram2count$Freq, decreasing=TRUE),]
+head(newsngram2countorded)
+## How can I remove all other instances of the first word so to have only the word with the highest frequency?
+
+rm(newstogetngram)
+rm(newsngram4)
+rm(newsngram3)
+rm(newsngram2)
+rm(newsngram1)
+
+library(tidyr)
+newsngram2countordedsplitted <- separate(data=newsngram2countorded, col=newsngram2, into=c("first","second"), sep = " ")
+head(newsngram2countordedsplitted)
+
+
+
+
+newsngram3count <- as.data.frame(table(newsngram3)) 
+
+newsngram4count <- as.data.frame(table(newsngram4)) 
+
+## Creating a function to predict the next word based on the previous 1, 2, or 3 words
+PredictNextWord <- function(Word1) {
+  
+  nextword <- newsngram2count[Word1,]
+  print(nextword)
+}
+
+
+rm(newsngram1)
+rm(newsngram2)
+rm(newsngram3)
+rm(newsngram4)
 
 ## If we do this for blog we get:
 
